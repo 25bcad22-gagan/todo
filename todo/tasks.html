@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>View Tasks</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Your Tasks</h1>
+    <ul id="taskList"></ul>
+    <button onclick="goBack()">Add More Tasks</button>
+  </div>
+
+  <script>
+    const taskList = document.getElementById("taskList");
+    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+    tasks.forEach(task => {
+      const li = document.createElement("li");
+      li.textContent = task;
+      taskList.appendChild(li);
+    });
+
+    function goBack() {
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>
