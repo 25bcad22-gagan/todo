@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>View Task</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <h1>Your Submitted Details 📋</h1>
+
+  <p><strong>Task:</strong> <span id="showTask"></span></p>
+  <p><strong>Phone Number:</strong> <span id="showPhone"></span></p>
+
+  <button onclick="goBack()">Back</button>
+</div>
+
+<script>
+const data = JSON.parse(localStorage.getItem("userData"));
+
+if (data) {
+  document.getElementById("showTask").textContent = data.task;
+  document.getElementById("showPhone").textContent = data.phone;
+}
+
+function goBack() {
+  window.location.href = "index.html";
+}
+</script>
+
+</body>
+</html>
