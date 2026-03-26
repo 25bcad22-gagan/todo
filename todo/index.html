@@ -2,73 +2,46 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>My Tasks</title>
+  <title>To-Do Service</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="container">
-  <h1>Add Your Tasks 📝</h1>
+  <h1>TaskManager 📝</h1>
 
-  <input type="text" id="taskInput" placeholder="Enter your task">
-  <button onclick="addTask()">Add Task</button>
+  <p>
+    Welcome to our To-Do List service! We help you stay organized by managing your
+    daily tasks efficiently. Enter your task along with your phone number so you
+    can keep track of your activities anytime.
+  </p>
 
-  <ul id="taskList"></ul>
+  <h3>Enter Your Task</h3>
 
-  <button onclick="goBack()">Back to Home</button>
+  <input type="text" id="task" placeholder="Enter your task">
+  <input type="text" id="phone" placeholder="Enter your phone number">
+
+  <button onclick="saveData()">Submit</button>
 </div>
 
 <script>
-  const taskList = document.getElementById("taskList");
+function saveData() {
+  const task = document.getElementById("task").value.trim();
+  const phone = document.getElementById("phone").value.trim();
 
-  // Load existing tasks
-  let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-
-  function addTask() {
-    const input = document.getElementById("taskInput");
-    const taskText = input.value.trim();
-
-    if (taskText === "") {
-      alert("Please enter a task!");
-      return;
-    }
-
-    tasks.push(taskText);
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-
-    input.value = "";
-    displayTasks();
+  if (task === "" || phone === "") {
+    alert("Please fill all fields!");
+    return;
   }
 
-  function displayTasks() {
-    taskList.innerHTML = "";
+  const data = { task, phone };
 
-    tasks.forEach((task, index) => {
-      const li = document.createElement("li");
-      li.textContent = task;
+  // Save to localStorage
+  localStorage.setItem("userData", JSON.stringify(data));
 
-      // Delete button
-      const btn = document.createElement("button");
-      btn.textContent = "Delete";
-      btn.onclick = () => deleteTask(index);
-
-      li.appendChild(btn);
-      taskList.appendChild(li);
-    });
-  }
-
-  function deleteTask(index) {
-    tasks.splice(index, 1);
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-    displayTasks();
-  }
-
-  function goBack() {
-    window.location.href = "index.html";
-  }
-
-  // Load tasks when page opens
-  displayTasks();
+  // Go to next page
+  window.location.href = "view.html";
+}
 </script>
 
 </body>
