@@ -1,77 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To-Do App</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>My Tasks</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- NAVBAR -->
-    <header>
-        <nav>
-            <h2>TaskMaster ✅</h2>
-            <ul>
-                <li><a href="#features">Features</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#start">Start</a></li>
-            </ul>
-        </nav>
-    </header>
+<div class="container">
+  <h1>Add Your Tasks 📝</h1>
 
-    <!-- HERO SECTION -->
-    <section class="hero">
-        <h1>Organize Your Life Easily</h1>
-        <p>Plan your tasks, stay productive, and achieve your goals with our simple To-Do List app.</p>
-        <button onclick="startApp()">Get Started</button>
-    </section>
+  <input type="text" id="taskInput" placeholder="Enter your task">
+  <button onclick="addTask()">Add Task</button>
 
-    <!-- FEATURES -->
-    <section id="features" class="features">
-        <h2>Features</h2>
-        <div class="feature-box">
-            <div>
-                <h3>📝 Add Tasks</h3>
-                <p>Easily add your daily tasks and keep track of everything.</p>
-            </div>
-            <div>
-                <h3>✅ Mark Complete</h3>
-                <p>Click tasks to mark them as completed.</p>
-            </div>
-            <div>
-                <h3>🗑 Delete Tasks</h3>
-                <p>Remove tasks once you're done.</p>
-            </div>
-        </div>
-    </section>
+  <ul id="taskList"></ul>
 
-    <!-- ABOUT -->
-    <section id="about" class="about">
-        <h2>About This App</h2>
-        <p>
-            This To-Do List app helps you manage your daily tasks efficiently.
-            Whether you're a student, developer, or professional, staying organized
-            has never been easier.
-        </p>
-    </section>
+  <button onclick="goBack()">Back to Home</button>
+</div>
 
-    <!-- START -->
-    <section id="start" class="start">
-        <h2>Ready to Get Productive?</h2>
-        <button onclick="startApp()">Start Managing Tasks</button>
-    </section>
+<script>
+  const taskList = document.getElementById("taskList");
 
-    <!-- FOOTER -->
-    <footer>
-        <p>© 2026 TaskMaster | Simple To-Do App</p>
-    </footer>
+  // Load existing tasks
+  let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
-    <script>
-        function startApp() {
-            window.location.href = "tasks.html"; // goes to your task page
-        }
-    </script>
+  function addTask() {
+    const input = document.getElementById("taskInput");
+    const taskText = input.value.trim();
+
+    if (taskText === "") {
+      alert("Please enter a task!");
+      return;
+    }
+
+    tasks.push(taskText);
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+
+    input.value = "";
+    displayTasks();
+  }
+
+  function displayTasks() {
+    taskList.innerHTML = "";
+
+    tasks.forEach((task, index) => {
+      const li = document.createElement("li");
+      li.textContent = task;
+
+      // Delete button
+      const btn = document.createElement("button");
+      btn.textContent = "Delete";
+      btn.onclick = () => deleteTask(index);
+
+      li.appendChild(btn);
+      taskList.appendChild(li);
+    });
+  }
+
+  function deleteTask(index) {
+    tasks.splice(index, 1);
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+    displayTasks();
+  }
+
+  function goBack() {
+    window.location.href = "index.html";
+  }
+
+  // Load tasks when page opens
+  displayTasks();
+</script>
 
 </body>
 </html>
