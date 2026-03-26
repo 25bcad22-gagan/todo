@@ -2,27 +2,37 @@ const API_URL = "https://your-app.onrender.com"; // change this
 
 const table = document.getElementById("adminTable");
 
-// Load all tasks
+// Load tasks from DB
 async function loadTasks() {
-    const res = await fetch(`${API_URL}/tasks`);
-    const tasks = await res.json();
+    try {
+        const res = await fetch(`${API_URL}/tasks`);
+        const tasks = await res.json();
 
-    table.innerHTML = "";
+        table.innerHTML = "";
 
-    tasks.forEach(task => {
-        const row = document.createElement("tr");
+        if (tasks.length === 0) {
+            table.innerHTML = "<tr><td colspan='4'>No data found</td></tr>";
+            return;
+        }
 
-        row.innerHTML = `
-            <td>${task.id}</td>
-            <td>${task.text}</td>
-            <td>${task.completed ? "✅ Done" : "❌ Pending"}</td>
-            <td>
-                <button onclick="deleteTask(${task.id})">Delete</button>
-            </td>
-        `;
+        tasks.forEach(task => {
+            const row = document.createElement("tr");
 
-        table.appendChild(row);
-    });
+            row.innerHTML = `
+                <td>${task.id}</td>
+                <td>${task.text}</td>
+                <td>${task.completed ? "Done" : "Pending"}</td>
+                <td>
+                    <button onclick="deleteTask(${task.id})">Delete</button>
+                </td>
+            `;
+
+            table.appendChild(row);
+        });
+
+    } catch (err) {
+        console.error("Error:", err);
+    }
 }
 
 // Delete task
@@ -34,5 +44,5 @@ async function deleteTask(id) {
     loadTasks();
 }
 
-// Load on start
-loadTasks();
+// Auto load
+window.onload = loadTasks;
